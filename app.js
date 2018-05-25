@@ -9,20 +9,15 @@ var server = http.createServer(function(req, res) {
   if (req.url == "/"){
     res.writeHead(200, {'Content-Type': 'text/html'});
     res.end(fs.readFileSync(__dirname + '/index.html', 'utf-8'));
-    console.log("enter root");
   } else if (req.url == "/game/three.min.js"){
     res.writeHead(200, {'Content-Type': 'text/javascript'});
     res.end(fs.readFileSync(__dirname + '/game/three.min.js', 'utf-8')); 
-    console.log(__dirname + '/game/three.min.js');
-    console.log("enter game");
   }  else if (req.url == "/game/enchant.min.js"){
     res.writeHead(200, {'Content-Type': 'text/javascript'});
     res.end(fs.readFileSync(__dirname + '/game/enchant.min.js', 'utf-8'));  
-    console.log("enter enchant");
   } else {
     res.writeHead(200, {'Content-Type': 'image/jpeg'});
-    res.end(fs.readFileSync(__dirname + url));      
-    console.log(__dirname + url);
+    res.end(fs.readFileSync(__dirname + url));
   }
 }).listen(3000); // ポート競合の場合は値を変更
 
@@ -30,7 +25,14 @@ var server = http.createServer(function(req, res) {
 var io = socketio.listen(server);
 
 // S04. connectionイベント・データを受信する
+// TODO
 io.sockets.on('connection', function(socket) {
+  socket.on('client_to_server', function(data) {
+    // S06. server_to_clientイベント・データを送信する
+    console.log(data.hello);
+    io.sockets.emit('server_to_client', {hello: "sekai"});
+  })
+  
   // var name;
   // // S05. client_to_serverイベント・データを受信する
   // socket.on('client_to_server', function(data) {
