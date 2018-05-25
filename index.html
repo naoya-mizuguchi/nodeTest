@@ -6,6 +6,8 @@
 	<meta charset="utf-8">
   <script type="text/javascript" src="game/three.min.js"></script>
 	<script type="text/javascript" src="game/enchant.min.js"></script>
+  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
 	<style>
 	.wrapper{
 		position: relative;
@@ -33,6 +35,7 @@
 	</div>
 
 	<script>
+    //var materials = [];
 		var camera, sphere, material, scene, renderer;
 		var isUserInteracting = false, //クリックしているか
 			onMouseDownMouseX = 0, //マウスのX座標
@@ -56,6 +59,14 @@
 		var game;
 		gameInit();
 		init();
+    
+    var materials = new Array(65);
+    
+    //TODO
+    var socket = io.connect(); // C02. ソケットへの接続
+    socket.emit("client_to_server",{hello: "world"});
+    socket.on("server_to_client",function(data){console.log(data.hello)});
+    
 		animate();
 
 		function init() {
@@ -71,10 +82,14 @@
 
 			var geometry = new THREE.SphereGeometry(500, 60, 40);
 			geometry.scale(1, 1, -1);
-
+      
       material = new THREE.MeshBasicMaterial({map : THREE.ImageUtils.loadTexture("Resources/path1.jpg")});
-
-			sphere = new THREE.Mesh(geometry, material);
+      // for (var i = 1; i <= 65; i++){
+      //   materials[i - 1] = new THREE.MeshBasicMaterial({map : THREE.ImageUtils.loadTexture("Resources/path" + i + ".jpg")});
+      // }
+      
+			// sphere = new THREE.Mesh(geometry, materials[0]);
+      sphere = new THREE.Mesh(geometry, material);
 			sphere.rotation.y = THREE.Math.degToRad(sphereAngleOffset);
 
 			scene.add(sphere);
@@ -164,8 +179,16 @@
 			}
 			pos = Math.round(pos);
 			if(pos < 1) pos = 1;
-			if(pos > 10) pos = 10;
+			if(pos > 65) pos = 65;
 
+			// scene.remove(sphere)
+			// var geometry = new THREE.SphereGeometry(500, 60, 40);
+			// geometry.scale(1, 1, -1);
+			// sphere = new THREE.Mesh(geometry, materials[pos - 1]);
+			// sphere.rotation.y = THREE.Math.degToRad(sphereAngleOffset);
+			// scene.add(sphere)
+
+      
 			var filepath = "Resources/path" + pos + ".jpg";
 			THREE.ImageUtils.loadTexture(filepath, null, function(tex) {
 				material.map.dispose();
