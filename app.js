@@ -27,10 +27,10 @@ var io = socketio.listen(server);
 // S04. connectionイベント・データを受信する
 // TODO
 io.sockets.on('connection', function(socket) {
-  socket.on('client_to_server', function(data) {
+  socket.on('client_to_server_broadcast', function(data) {
     // S06. server_to_clientイベント・データを送信する
-    console.log(data.hello);
-    io.sockets.emit('server_to_client', {hello: "sekai"});
+    console.log(data.position);
+    socket.broadcast.emit('server_to_client', {position: data.position});
   })
   
   // var name;
