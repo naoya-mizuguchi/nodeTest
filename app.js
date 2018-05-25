@@ -5,10 +5,25 @@ var fs = require('fs');
 
 // S02. HTTPサーバを生成する
 var server = http.createServer(function(req, res) {
-  res.writeHead(200, {
-    'Content-Type': 'text/html'
-  });
-  res.end(fs.readFileSync(__dirname + '/index.html', 'utf-8'));
+  var url = req.url;
+  if (req.url == "/"){
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.end(fs.readFileSync(__dirname + '/index.html', 'utf-8'));
+    console.log("enter root");
+  } else if (req.url == "/game/three.min.js"){
+    res.writeHead(200, {'Content-Type': 'text/javascript'});
+    res.end(fs.readFileSync(__dirname + '/game/three.min.js', 'utf-8')); 
+    console.log(__dirname + '/game/three.min.js');
+    console.log("enter game");
+  }  else if (req.url == "/game/enchant.min.js"){
+    res.writeHead(200, {'Content-Type': 'text/javascript'});
+    res.end(fs.readFileSync(__dirname + '/game/enchant.min.js', 'utf-8'));  
+    console.log("enter enchant");
+  } else {
+    res.writeHead(200, {'Content-Type': 'image/jpeg'});
+    res.end(fs.readFileSync(__dirname + url));      
+    console.log(__dirname + url);
+  }
 }).listen(3000); // ポート競合の場合は値を変更
 
 // S03. HTTPサーバにソケットをひも付ける（WebSocket有効化）

@@ -4,8 +4,8 @@
 <head>
 	<title>nodeTest</title>
 	<meta charset="utf-8">
-  <script type="text/javascript" src="http://wired.cyber.t.u-tokyo.ac.jp/~mizuguchi/TouchTest/game/three.min.js"></script>
-	<script type="text/javascript" src="http://wired.cyber.t.u-tokyo.ac.jp/~mizuguchi/TouchTest/game/enchant.min.js"></script>
+  <script type="text/javascript" src="game/three.min.js"></script>
+	<script type="text/javascript" src="game/enchant.min.js"></script>
 	<style>
 	.wrapper{
 		position: relative;
@@ -23,6 +23,7 @@
 		font-size: 10px;
 	}
 	</style>
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 
 <body>
@@ -71,7 +72,7 @@
 			var geometry = new THREE.SphereGeometry(500, 60, 40);
 			geometry.scale(1, 1, -1);
 
-      material = new THREE.MeshBasicMaterial({map : THREE.ImageUtils.loadTexture("Resources/path_1.jpg")});
+      material = new THREE.MeshBasicMaterial({map : THREE.ImageUtils.loadTexture("Resources/path1.jpg")});
 
 			sphere = new THREE.Mesh(geometry, material);
 			sphere.rotation.y = THREE.Math.degToRad(sphereAngleOffset);
@@ -163,16 +164,15 @@
 			}
 			pos = Math.round(pos);
 			if(pos < 1) pos = 1;
-			if(pos > 65) pos = 65;
+			if(pos > 10) pos = 10;
 
-			var filepath = "Resources/path_" + pos + ".jpg";
+			var filepath = "Resources/path" + pos + ".jpg";
 			THREE.ImageUtils.loadTexture(filepath, null, function(tex) {
 				material.map.dispose();
 				material.map = tex;
 				material.map.needsUpdate = true;
 				sphere.rotation.y = THREE.Math.degToRad(sphereAngleOffset);
 			});
-
 		}
 
 		function onGestureStart(event) {
